@@ -1,8 +1,9 @@
 <?php
-// Copyright 2023 Stephen Warren <swarren@wwwdotorg.org>
+// Copyright 2023-2024 Stephen Warren <swarren@wwwdotorg.org>
 // SPDX-License-Identifier: MIT
 
 require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+fcchRestrictAccess();
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,7 +40,7 @@ $results = $wpdb->get_results("
     INNER JOIN `wp_mgcf_bookly_staff_categories`
             ON `wp_mgcf_bookly_staff_categories`.`id` = `wp_mgcf_bookly_staff`.`category_id`
     WHERE
-        `wp_mgcf_bookly_appointments`.`end_date` >= '${fromDate}' AND
+        `wp_mgcf_bookly_appointments`.`end_date` >= '{$fromDate}' AND
         `wp_mgcf_bookly_customer_appointments`.`status` = 'approved' AND
         `wp_mgcf_bookly_staff_categories`.`name` = 'Volunteer'
     ORDER BY

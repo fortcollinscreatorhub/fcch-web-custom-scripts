@@ -76,7 +76,7 @@ function waGetContacts($filter) {
         '$filter' => $filter
     );
     $url = $waAccountUrl . '/contacts/?' . http_build_query($queryParams);
-    return $waApiClient->makeRequest($url)['Contacts'];
+    return array_get_or_default($waApiClient->makeRequest($url), 'Contacts', []);
 }
 
 function waFieldValueOfContact($contact, $fieldName) {
@@ -133,6 +133,24 @@ function waPrivilegeNamesOfContact($contact) {
         $results[$privilegeName] = true;
     }
     return $results;
+}
+
+function waWriteContactFieldValue($userWaId, $fieldName, $fieldValue) {
+    global $waApiClient;
+    global $waAccountUrl;
+
+    $url = $waAccountUrl . '/contacts/' . $userWaId;
+    $rfidField = [];
+    $rfidField['FieldName'] = $fieldName;
+    $rfidField['Value'] = $fieldValue;
+    $fieldValues = [];
+    $fieldValues[] = $rfidField;
+    $data = [];
+    $data['Id'] = $userWaId;
+    $data['FieldValues'] = $fieldValues;
+    return $waApiClient->makeRequest($url, 'PUT', $data);
+    // Note: docs say the updated contact is returned, but in fact
+    // it looks like the original contact data is returned:-(
 }
 
 function waInit() {

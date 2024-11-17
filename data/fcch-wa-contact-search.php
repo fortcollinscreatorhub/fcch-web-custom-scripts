@@ -1,10 +1,12 @@
 <?php
+// Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
+
 require_once(dirname(__FILE__) . '/fcch-wa-utils.php');
 waInit();
 ?>
 <!DOCTYPE html>
 <html>
-<!-- Stephen Warren wrote this 2024/11/13 -->
 <head>
 <title>FCCH Wild Apricot Contact Search</title>
 <?php // Wordpress restrictions prevent the browser from fetching these itself:  ?>

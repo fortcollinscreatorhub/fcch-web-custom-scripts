@@ -1,3 +1,7 @@
+<?php
+// Copyright 2023 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
+?>
 <style>
 table {
     border: 0;

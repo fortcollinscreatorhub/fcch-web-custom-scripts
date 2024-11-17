@@ -1,7 +1,11 @@
-<?php require_once(dirname(__FILE__) . '/fcch-restrict-access.php'); ?>
+<?php
+// Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
+
+require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+?>
 <!DOCTYPE html>
 <html>
-<!-- Stephen Warren wrote this 2024/11/10 -->
 <head>
 <title>FCCH Volunteer Schedule Report</title>
 <?php // Wordpress restrictions prevent the browser from fetching these itself:  ?>

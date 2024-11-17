@@ -1,4 +1,10 @@
 <?php
+// Copyright 2018, Wild Apricot Inc.
+// SPDX-License-Identifier: MIT
+//
+// Source: https://github.com/WildApricot/ApiSamples.git
+// PHP/sampleApplication.php
+
     /**
      * API helper class. You can copy whole class in your PHP application.
      */

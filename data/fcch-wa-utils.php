@@ -1,5 +1,6 @@
 <?php
-// Stephen Warren wrote this 2024/11/10
+// Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
 
 require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
 require_once(dirname(__FILE__) . '/WaApi.php');

@@ -1,4 +1,7 @@
 <?php
+// Copyright 2023-2024 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
+
     // https://stackoverflow.com/questions/2810124/how-can-i-add-a-php-page-to-wordpress
     require_once(dirname(__FILE__) . '/../wp-config.php');
     $wp->init();

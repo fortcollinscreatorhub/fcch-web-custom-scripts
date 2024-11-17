@@ -1,7 +1,11 @@
-<?php require_once(dirname(__FILE__) . '/fcch-restrict-access.php'); ?>
+<?php
+// Copyright 2023 Stephen Warren <swarren@wwwdotorg.org>
+// SPDX-License-Identifier: MIT
+
+require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+?>
 <!DOCTYPE html>
 <html>
-<!-- Stephen Warren wrote this 2023/06/08 -->
 <head>
 <title>FCCH Bookly Appointment List</title>
 <?php // Wordpress restrictions prevent the browser from fetching these itself:  ?>

@@ -2,8 +2,8 @@
 // Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
 // SPDX-License-Identifier: MIT
 
-require_once(dirname(__FILE__) . '/fcch-wa-utils.php');
-waInit();
+require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+fcchRestrictAccess();
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,11 +59,6 @@ if (!isset($_POST['action'])) {
 <?php
     exit;
 }
-
-// FIXME: Should we remove fcch-wa-utils.php's use of fcch-restrict-access.php,
-// so stop relying on the manually-maintained list of authorized users,
-// and solely rely on the WA contact privilege field trusted flag?
-// If so, we'd probably want to apply that to the other scripts too?
 
 $auth_rfid = array_get_or_default($_POST, 'auth_rfid', 'invalid');
 $legal_auth_rfids = waRfidsOfContact($waSelfContact);

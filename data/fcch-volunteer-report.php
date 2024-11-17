@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+fcchRestrictAccess();
 ?>
 <!DOCTYPE html>
 <html>

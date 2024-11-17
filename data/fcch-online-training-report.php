@@ -1,8 +1,9 @@
 <?php
-// Copyright 2023 Stephen Warren <swarren@wwwdotorg.org>
+// Copyright 2023-2024 Stephen Warren <swarren@wwwdotorg.org>
 // SPDX-License-Identifier: MIT
 
 require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
+fcchRestrictAccess();
 ?>
 <!DOCTYPE html>
 <html>

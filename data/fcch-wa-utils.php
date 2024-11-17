@@ -2,7 +2,6 @@
 // Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
 // SPDX-License-Identifier: MIT
 
-require_once(dirname(__FILE__) . '/fcch-restrict-access.php');
 require_once(dirname(__FILE__) . '/WaApi.php');
 require_once('/home/u930-v2vbn3xb6dhb/.wa/api.php');
 
@@ -13,19 +12,20 @@ function array_get_or_default($array, $key, $default=null) {
     return $array[$key];
 }
 
+function waGetAccountDetails() {
+    global $waApiClient;
+    global $waAccountUrl;
+
+    $url = 'https://api.wildapricot.org/v2.2/Accounts/';
+    $response = $waApiClient->makeRequest($url);
+    $waAccountUrl = $response[0]['Url'];
+}
+
 function waGetSelfWaId() {
     global $wpdb;
-    global $waSelfIsAdmin;
     global $waSelfWaId;
 
     $wpUser = wp_get_current_user();
-    $wpRoles = $wpUser->roles;
-    if (in_array("administrator", $wpRoles)) {
-        $waSelfIsAdmin = true;
-        $waSelfWaId = null;
-        return;
-    }
-    $waSelfIsAdmin = false;
 
     $wpUserID = $wpUser->ID;
     $results = $wpdb->get_results("
@@ -40,23 +40,14 @@ function waGetSelfWaId() {
         ;
     ");
     if (count($results) != 1) {
-        echo "ERROR: Could not query user WA ID\n";
+        echo "ERROR: count(usermeta.wa_contact_id)!=1 for WP user\n";
         exit;
     }
     $waSelfWaId = $results[0]->meta_value;
     if (!$waSelfWaId) {
-        echo "ERROR: Could not query user WA ID\n";
+        echo "ERROR: null usermeta.wa_contact_id for WP user\n";
         exit;
     }
-}
-
-function waGetAccountDetails() {
-    global $waApiClient;
-    global $waAccountUrl;
-
-    $url = 'https://api.wildapricot.org/v2.2/Accounts/';
-    $response = $waApiClient->makeRequest($url); 
-    $waAccountUrl = $response[0]['Url'];
 }
 
 function waGetContact($userWaId) {
@@ -153,10 +144,33 @@ function waWriteContactFieldValue($userWaId, $fieldName, $fieldValue) {
     // it looks like the original contact data is returned:-(
 }
 
+function waCheckSelfIsTrusted() {
+    global $waSelfContact;
+
+    $membershipEnabled = array_get_or_default($waSelfContact, 'MembershipEnabled', false);
+    if (!$membershipEnabled) {
+        var_dump($waSelfContact);
+        echo "ERROR: MembershipEnabled not set to true in Wild Apricot.\n";
+        exit;
+    }
+
+    $status = array_get_or_default($waSelfContact, 'Status', '');
+    if ($status !== 'Active') {
+        echo "ERROR: Status field not set to Active in Wild Apricot.\n";
+        exit;
+    }
+
+    $privileges = waPrivilegeNamesOfContact($waSelfContact);
+    $key = array_search('Trusted', $privileges);
+    if ($key === false) {
+        echo "ERROR: Trusted privilege not set in Wild Apricot.\n";
+        exit;
+    }
+}
+
 function waInit() {
     global $waApiClient;
     global $waApiKey;
-    global $waSelfIsAdmin;
     global $waSelfWaId;
     global $waSelfContact;
 
@@ -165,11 +179,7 @@ function waInit() {
     $waApiClient = WaApiClient::getInstance();
     $waApiClient->initTokenByApiKey($waApiKey);
     waGetAccountDetails();
-
-    if ($waSelfIsAdmin) {
-        $waSelfContact = null;
-    } else {
-        $waSelfContact = waGetContact($waSelfWaId);
-    }
+    $waSelfContact = waGetContact($waSelfWaId);
+    waCheckSelfIsTrusted();
 }
 ?>

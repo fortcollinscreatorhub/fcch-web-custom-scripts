@@ -161,6 +161,7 @@ if ($need_rfid) {
 }
 
 $rfids = waRfidsOfContact($contact);
+$origRfids = $rfids;
 switch ($action) {
     case 'add':
         if (!in_array($rfid, $rfids)) {
@@ -202,6 +203,20 @@ switch ($action) {
 }
 
 if ($do_write) {
+    $auditArray = array(
+        'date' => date('Y-m-d H:i:s'),
+        'site' => $_SERVER['SERVER_NAME'],
+        'script' => basename(__FILE__),
+        'waId' => $waSelfContact['Id'],
+        'waName' => $waSelfContact['DisplayName'],
+        'formAction' => $action,
+        'formRfid' => $rfid,
+        'origRfids' => $origRfids,
+        'rfids' => $rfids,
+    );
+    $auditText = json_encode($auditArray) . "\n";
+    file_put_contents('/home/u930-v2vbn3xb6dhb/.wa/audit.txt', $auditText, FILE_APPEND);
+
     waWriteContactFieldValue(
         $contact['Id'], 'RFID ID', implode(',', $rfids)
     );

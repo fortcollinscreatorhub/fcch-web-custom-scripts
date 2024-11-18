@@ -26,6 +26,10 @@ function waGetSelfWaId() {
     global $waSelfWaId;
 
     $wpUser = wp_get_current_user();
+    if (!$wpUser->exists()) {
+        echo "ERROR: Not logged in to WP\n";
+        exit;
+    }
 
     $wpUserID = $wpUser->ID;
     $results = $wpdb->get_results("

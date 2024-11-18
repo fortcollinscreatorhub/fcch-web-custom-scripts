@@ -23,6 +23,7 @@ td:first-child {
 <?php
 if (is_null($waSelfContact)) {
     echo "ERROR: This form doesn't work for WP admins; docent RFID validation is required\n";
+    echo "</body></html>";
     exit;
 }
 
@@ -65,6 +66,7 @@ $legal_auth_rfids = waRfidsOfContact($waSelfContact);
 if (!in_array($auth_rfid, $legal_auth_rfids)) {
     echo "ERROR: Invalid authentication RFID\n";
     echo "</body></html>";
+    exit;
 }
 
 $action = array_get_or_default($_POST, 'action', 'invalid');
@@ -73,15 +75,15 @@ switch ($action) {
     case 'remove':
     case 'replace':
         $need_rfid = true;
-        $do_write = true;
+        $doWrite = true;
         break;
     case 'clear':
         $need_rfid = false;
-        $do_write = true;
+        $doWrite = true;
         break;
     case 'query':
         $need_rfid = false;
-        $do_write = false;
+        $doWrite = false;
         break;
     default:
         echo "ERROR: Invalid action\n";
@@ -116,6 +118,8 @@ if ($need_rfid) {
         echo "</body></html>";
         exit;
     }
+} else {
+    $rfid = 0;
 }
 
 function dumpContactList($contacts) {
@@ -162,6 +166,7 @@ if ($need_rfid) {
 
 $rfids = waRfidsOfContact($contact);
 $origRfids = $rfids;
+$origDoWrite = $doWrite;
 switch ($action) {
     case 'add':
         if (!in_array($rfid, $rfids)) {
@@ -169,7 +174,7 @@ switch ($action) {
             $rfids[] = $rfid;
         } else {
             echo "NOTE: RFID already present in user's RFID list.<br/>";
-            $do_write = false;
+            $doWrite = false;
         }
         break;
     case 'remove':
@@ -179,7 +184,7 @@ switch ($action) {
             unset($rfids[$key]);
         } else {
             echo "NOTE: RFID not previously present in user's RFID list.<br/>";
-            $do_write = false;
+            $doWrite = false;
         }
         break;
     case 'replace':
@@ -195,14 +200,17 @@ switch ($action) {
             $rfids = [];
         } else {
             echo "NOTE: User's RFID list was previously empty.<br/>";
-            $do_write = false;
+            $doWrite = false;
         }
         break;
     default:
         break;
 }
+if (!$doWrite && $origDoWrite) {
+    echo "NOTE: Database write skipped.<br/>";
+}
 
-if ($do_write) {
+if ($doWrite) {
     $auditArray = array(
         'date' => date('Y-m-d H:i:s'),
         'site' => $_SERVER['SERVER_NAME'],

@@ -117,6 +117,19 @@ function waRfidsOfContact($contact) {
     return $results;
 }
 
+function waPrivilegeIdsOfContact($contact) {
+    $privileges = waFieldValueOfContact($contact, 'Privileges');
+    if (is_null($privileges))
+        return [];
+
+    $results = [];
+    foreach ($privileges as $privilege) {
+        $privilegeId = $privilege['Id'];
+        $results[$privilegeId] = true;
+    }
+    return $results;
+}
+
 function waPrivilegeNamesOfContact($contact) {
     $privileges = waFieldValueOfContact($contact, 'Privileges');
     if (is_null($privileges))
@@ -135,14 +148,14 @@ function waWriteContactFieldValue($userWaId, $fieldName, $fieldValue) {
     global $waAccountUrl;
 
     $url = $waAccountUrl . '/contacts/' . $userWaId;
-    $rfidField = [];
-    $rfidField['FieldName'] = $fieldName;
-    $rfidField['Value'] = $fieldValue;
-    $fieldValues = [];
-    $fieldValues[] = $rfidField;
+    $field = [];
+    $field['FieldName'] = $fieldName;
+    $field['Value'] = $fieldValue;
+    $fields = [];
+    $fields[] = $field;
     $data = [];
     $data['Id'] = $userWaId;
-    $data['FieldValues'] = $fieldValues;
+    $data['FieldValues'] = $fields;
     return $waApiClient->makeRequest($url, 'PUT', $data);
     // Note: docs say the updated contact is returned, but in fact
     // it looks like the original contact data is returned:-(

@@ -18,7 +18,7 @@ if (!isset($_POST['searchstring'])) {
     $searchString = '';
 } else {
     $searchString = $_POST['searchstring'];
-    if (!preg_match('/^[-A-Za-z0-9@_\(\) ]*$/', $searchString)) {
+    if (!preg_match('/^[-A-Za-z0-9@_\(\) .+]*$/', $searchString)) {
         $searchString = '';
         echo "<b>Illegal search string; only letters, numbers, -@_(), space accepted.</b>\n";
     }

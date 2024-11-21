@@ -108,18 +108,19 @@ $email = strtolower($email);
 
 if ($need_rfid) {
     $rfid = array_get_or_default($_POST, 'rfid', '');
-    if ($rfid === '') {
-        echo "ERROR: Empty member RFID\n";
-        echo "</body></html>";
-        exit;
-    }
     if (!preg_match('/^[0-9]+$/', $rfid)) {
         echo "ERROR: Illegal member RFID\n";
         echo "</body></html>";
         exit;
     }
+    $rfid = ltrim($rfid, '0');
+    if ($rfid === '') {
+        echo "ERROR: Empty member RFID\n";
+        echo "</body></html>";
+        exit;
+    }
 } else {
-    $rfid = 0;
+    $rfid = '';
 }
 
 function dumpContactList($contacts) {
@@ -149,16 +150,23 @@ if ($contactCount !== 1) {
 $contact = $contacts[0];
 
 if ($need_rfid) {
-    $contactsWithRfid = waGetContacts("substringof('RFID ID', '$rfid'");
-    $conflictCount = 0;
-    foreach ($contactsWithRfid as $contactWithRfid) {
-        if ($contactWithRfid['Id'] !== $contact['Id']) {
-            $conflictCount++;
+    $matchContacts = waGetContacts("substringof('RFID ID', '$rfid')");
+    $sawConflicts = false;
+    foreach ($matchContacts as $matchContact) {
+        // Test match on full RFID; more accurate than just substring
+        $matchContactRfids = waRfidsOfContact($matchContact);
+        $key = array_search($rfid, $matchContactRfids);
+        if ($key === false) {
+            continue;
         }
+
+        if (!$sawConflicts) {
+            $sawConflicts = true;
+            echo "ERROR: RFID is already assigned to contacts:<br/>\n";
+        }
+        dumpContactList(array($matchContact));
     }
-    if ($conflictCount !== 0) {
-        echo "ERROR: RFID is already assigned to contacts:<br/>\n";
-        dumpContactList($contactsWithRfid);
+    if ($sawConflicts) {
         echo "</body></html>";
         exit;
     }

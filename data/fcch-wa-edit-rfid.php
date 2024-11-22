@@ -33,7 +33,7 @@ if (!isset($_POST['action'])) {
     <table>
     <tr>
     <td><label for="action">Your RFID (for authentication):</label></td>
-    <td><input type="number" id="auth_rfid" name="auth_rfid"></td>
+    <td><input type="password" autocomplete="new-password" id="auth_rfid" name="auth_rfid"></td>
     </tr><tr>
     <td><label for="action">Action:</label></td>
     <td><select id="action" name="action">

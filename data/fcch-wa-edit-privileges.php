@@ -248,6 +248,7 @@ if ($doWrite) {
         'waId' => $waSelfContact['Id'],
         'waName' => $waSelfContact['DisplayName'],
         'formAction' => $action,
+        'formEmail' => $email,
         'formPrivs' => $formPrivs,
         'origPrivileges' => array_keys($origPrivileges),
         'privileges' => array_keys($privileges),

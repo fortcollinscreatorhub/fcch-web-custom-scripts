@@ -226,6 +226,7 @@ if ($doWrite) {
         'waId' => $waSelfContact['Id'],
         'waName' => $waSelfContact['DisplayName'],
         'formAction' => $action,
+        'formEmail' => $email,
         'formRfid' => $rfid,
         'origRfids' => $origRfids,
         'rfids' => $rfids,

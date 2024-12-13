@@ -39,11 +39,13 @@ th {
     border: 0;
     padding: 0.2em;
     vertical-align: top;
+    text-align: left;
 }
 td {
     margin: 0.2em;
     border: 0;
     padding: 0.2em;
     vertical-align: top;
+    text-align: left;
 }
 </style>

@@ -60,18 +60,21 @@ if ($searchString !== '') {
     echo "<thead>\n";
     echo "<th>WA ID</th>\n";
     echo "<th>Status</th>\n";
-    echo "<th>FirstName</th>\n";
-    echo "<th>LastName</th>\n";
-    echo "<th>DisplayName</th>\n";
+    echo "<th>Renewal Due</th>\n";
+    echo "<th>First Name</th>\n";
+    echo "<th>Last Name</th>\n";
+    echo "<th>Display Name</th>\n";
     echo "<th>Email</th>\n";
     echo "<th>Phone</th>\n";
     echo "<th>RFID ID</th>\n";
     echo "<th>Privileges</th>\n";
+    echo "<th>Locker Rental</th>\n";
     echo "</thead>\n";
     foreach ($contacts as $contact) {
         echo "<tr>\n";
         echo "<td>" . $contact['Id'] . "</td>\n";
         echo "<td>" . waMemberStatusOfContact($contact) . "</td>\n";
+        echo "<td>" . waRenewalDueOfContact($contact) . "</td>\n";
         echo "<td>" . $contact['FirstName'] . "</td>\n";
         echo "<td>" . $contact['LastName'] . "</td>\n";
         echo "<td>" . $contact['DisplayName'] . "</td>\n";
@@ -92,6 +95,7 @@ if ($searchString !== '') {
             echo "<br/>";
         }
         echo "</td>\n";
+        echo "<td>" . waLockerRentalOfContact($contact) . "</td>\n";
         echo "</tr>\n";
     }
     echo "</table>\n";

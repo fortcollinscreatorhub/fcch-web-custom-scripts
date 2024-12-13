@@ -101,6 +101,13 @@ function waMemberStatusOfContact($contact) {
     return "$status ($membershipLevel)";
 }
 
+function waRenewalDueOfContact($contact) {
+    $renewalDue = waFieldValueOfContact($contact, 'Renewal due');
+    if (is_null($renewalDue))
+        return "";
+    return $renewalDue;
+}
+
 function waRfidsOfContact($contact) {
     $rawValue = waFieldValueOfContact($contact, 'RFID ID');
     if (is_null($rawValue))
@@ -141,6 +148,13 @@ function waPrivilegeNamesOfContact($contact) {
         $results[$privilegeName] = true;
     }
     return $results;
+}
+
+function waLockerRentalOfContact($contact) {
+    $lockerRental = waFieldValueOfContact($contact, 'Locker Rental');
+    if (is_null($lockerRental))
+        return 0;
+    return $lockerRental;
 }
 
 function waWriteContactFieldValue($userWaId, $fieldName, $fieldValue) {

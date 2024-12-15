@@ -153,6 +153,10 @@ if ($need_rfid) {
     $matchContacts = waGetContacts("substringof('RFID ID', '$rfid')");
     $sawConflicts = false;
     foreach ($matchContacts as $matchContact) {
+        if ($matchContact['Id'] === $contact['Id']) {
+            continue;
+        }
+
         // Test match on full RFID; more accurate than just substring
         $matchContactRfids = waRfidsOfContact($matchContact);
         $key = array_search($rfid, $matchContactRfids);

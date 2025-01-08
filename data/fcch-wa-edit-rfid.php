@@ -247,6 +247,11 @@ echo "RFIDs now:<br/>\n";
 foreach ($rfids as $rfid) {
     echo "... $rfid<br/>\n";
 }
+
+if ($doWrite) {
+    echo "<br/>";
+    echo "At the Hub? You may want to update the <a href=\"http://10.1.10.145:8080/\">ACL server</a>.<br>";
+}
 ?>
 
 </body>

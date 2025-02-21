@@ -27,7 +27,7 @@ function waGetSelfWaId() {
 
     $wpUser = wp_get_current_user();
     if (!$wpUser->exists()) {
-        echo "ERROR: Not logged in to WP\n";
+        echo "ERROR: Not logged in to WP; visit www.fortcollinscreatorhub.org and click the login button.\n";
         exit;
     }
 

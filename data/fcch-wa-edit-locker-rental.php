@@ -153,9 +153,11 @@ $contactStatus = waMemberStatusOfContact($contact);
 $contactBundleMember = waFieldValueOfContact($contact, 'Member role');
 if (
     (!str_starts_with($contactStatus, 'Active')) ||
-    ($contactBundleMember === 'Bundle member')
+    ($contactBundleMember === 'Bundle member') ||
+    (str_contains($contactStatus, 'Prepaid')) ||
+    (str_contains($contactStatus, '(Docent)'))
 ) {
-    echo "ERROR: Contact is not active, or is a bundle member<br/>\n";
+    echo "ERROR: Contact is not active, or is a bundle member, or is on an annual plan, or is a docent<br/>\n";
     echo "</body></html>";
     exit;
 }

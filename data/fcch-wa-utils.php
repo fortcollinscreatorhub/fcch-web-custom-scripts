@@ -151,10 +151,20 @@ function waPrivilegeNamesOfContact($contact) {
 }
 
 function waLockerRentalOfContact($contact) {
-    $lockerRental = waFieldValueOfContact($contact, 'Locker Rental');
-    if (is_null($lockerRental))
+    $contactStatus = waMemberStatusOfContact($contact);
+    if (
+        (str_contains($contactStatus, 'Prepaid')) ||
+        (str_contains($contactStatus, 'Annual'))
+    ) {
+        $lockerFieldName = 'Annual Locker Rental';
+    } else {
+        $lockerFieldName = 'Monthly Locker Rental';
+    }
+
+    $lockerCount = waFieldValueOfContact($contact, $lockerFieldName);
+    if (is_null($lockerCount))
         return 0;
-    return $lockerRental;
+    return array($lockerFieldName, $lockerCount);
 }
 
 function waWriteContactFieldValue($userWaId, $fieldName, $fieldValue) {

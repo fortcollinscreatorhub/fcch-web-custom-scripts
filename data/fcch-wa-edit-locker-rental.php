@@ -154,15 +154,14 @@ $contactBundleMember = waFieldValueOfContact($contact, 'Member role');
 if (
     (!str_starts_with($contactStatus, 'Active')) ||
     ($contactBundleMember === 'Bundle member') ||
-    (str_contains($contactStatus, 'Prepaid')) ||
     (str_contains($contactStatus, '(Docent)'))
 ) {
-    echo "ERROR: Contact is not active, or is a bundle member, or is on an annual plan, or is a docent<br/>\n";
+    echo "ERROR: Contact is not active, or is a bundle member, or is a docent<br/>\n";
     echo "</body></html>";
     exit;
 }
 
-$lockerCount = waLockerRentalOfContact($contact);
+list($lockerFieldName, $lockerCount) = waLockerRentalOfContact($contact);
 $origLockerCount = $lockerCount;
 $origDoWrite = $doWrite;
 switch ($action) {
@@ -210,7 +209,7 @@ if ($doWrite) {
     file_put_contents('/home/u930-v2vbn3xb6dhb/.wa/audit.txt', $auditText, FILE_APPEND);
 
     waWriteContactFieldValue(
-        $contact['Id'], 'Locker Rental', $lockerCount
+        $contact['Id'], $lockerFieldName, $lockerCount
     );
 }
 
@@ -218,9 +217,10 @@ if ($lockerCount > $origLockerCount) {
     echo "Locker count INCREASED; make sure to collect key deposit(s), and perhaps partial-month payment(s).<br/>\n";
 }
 if ($action !== 'query') {
-    echo "Locker count was: ${origLockerCount}<br/>\n";
+    echo "Locker count was: {$origLockerCount}<br/>\n";
 }
-echo "Locker count now: ${lockerCount}<br/>\n";
+echo "Locker count now: {$lockerCount}<br/>\n";
+echo "Locker field name: {$lockerFieldName}<br/>\n";
 ?>
 
 </body>

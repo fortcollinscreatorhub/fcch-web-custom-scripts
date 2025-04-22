@@ -95,7 +95,14 @@ if ($searchString !== '') {
             echo "<br/>";
         }
         echo "</td>\n";
-        echo "<td>" . waLockerRentalOfContact($contact) . "</td>\n";
+        list($lockerFieldName, $lockerCount) = waLockerRentalOfContact($contact);
+        if ($lockerCount > 0) {
+            $lockerFieldNameFirstWord = explode(" ", $lockerFieldName)[0];
+            $lockerText = $lockerCount . " (" . $lockerFieldNameFirstWord . ")";
+        } else {
+            $lockerText = "";
+        }
+        echo "<td>" . $lockerText . "</td>\n";
         echo "</tr>\n";
     }
     echo "</table>\n";

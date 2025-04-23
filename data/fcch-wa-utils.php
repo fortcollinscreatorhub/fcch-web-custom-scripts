@@ -163,7 +163,7 @@ function waLockerRentalOfContact($contact) {
 
     $lockerCount = waFieldValueOfContact($contact, $lockerFieldName);
     if (is_null($lockerCount))
-        return 0;
+        $lockerCount = 0;
     return array($lockerFieldName, $lockerCount);
 }
 

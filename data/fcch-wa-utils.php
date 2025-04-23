@@ -2,8 +2,24 @@
 // Copyright 2024 Stephen Warren <swarren@wwwdotorg.org>
 // SPDX-License-Identifier: MIT
 
+$homePath = '/home/u930-v2vbn3xb6dhb/';
+$dotWaPath = $homePath . '/.wa';
+
 require_once(dirname(__FILE__) . '/WaApi.php');
-require_once('/home/u930-v2vbn3xb6dhb/.wa/api.php');
+require_once($dotWaPath . '/api.php');
+
+function waAuditWrite($auditArray) {
+    global $dotWaPath;
+
+    $auditArrayBase = array(
+        'date' => date('Y-m-d H:i:s'),
+        'site' => $_SERVER['SERVER_NAME'],
+    );
+    $auditArray = array_merge($auditArrayBase, $auditArray);
+    $auditText = json_encode($auditArray) . "\n";
+    $fn = 'audit-' . date('Y-m') . '-' . $_SERVER['SERVER_NAME'] . '.txt';
+    file_put_contents($dotWaPath . '/' . $fn, $auditText, FILE_APPEND);
+}
 
 function array_get_or_default($array, $key, $default=null) {
     if (!isset($array[$key])) {

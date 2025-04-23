@@ -242,8 +242,6 @@ if (!$doWrite && $origDoWrite) {
 
 if ($doWrite) {
     $auditArray = array(
-        'date' => date('Y-m-d H:i:s'),
-        'site' => $_SERVER['SERVER_NAME'],
         'script' => basename(__FILE__),
         'waId' => $waSelfContact['Id'],
         'waName' => $waSelfContact['DisplayName'],
@@ -253,8 +251,7 @@ if ($doWrite) {
         'origPrivileges' => array_keys($origPrivileges),
         'privileges' => array_keys($privileges),
     );
-    $auditText = json_encode($auditArray) . "\n";
-    file_put_contents('/home/u930-v2vbn3xb6dhb/.wa/audit.txt', $auditText, FILE_APPEND);
+    waAuditWrite($auditArray);
 
     $fieldValue = [];
     foreach ($privileges as $privilegeId => $unused) {

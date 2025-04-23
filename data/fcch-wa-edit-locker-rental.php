@@ -194,8 +194,6 @@ if ($lockerCount == $origLockerCount) {
 
 if ($doWrite) {
     $auditArray = array(
-        'date' => date('Y-m-d H:i:s'),
-        'site' => $_SERVER['SERVER_NAME'],
         'script' => basename(__FILE__),
         'waId' => $waSelfContact['Id'],
         'waName' => $waSelfContact['DisplayName'],
@@ -205,8 +203,7 @@ if ($doWrite) {
         'origLockerCount' => $origLockerCount,
         'lockerCount' => $lockerCount,
     );
-    $auditText = json_encode($auditArray) . "\n";
-    file_put_contents('/home/u930-v2vbn3xb6dhb/.wa/audit.txt', $auditText, FILE_APPEND);
+    waAuditWrite($auditArray);
 
     waWriteContactFieldValue(
         $contact['Id'], $lockerFieldName, $lockerCount

@@ -28,6 +28,28 @@ function array_get_or_default($array, $key, $default=null) {
     return $array[$key];
 }
 
+function waArrayQuery($baseUrl, $baseQueryParams, $arrayName) {
+    global $waApiClient;
+
+    $pageSize = 100;
+    $pageStart = 0;
+    $result = array();
+    while (true) {
+        $queryParams = $baseQueryParams;
+        $queryParams['$top'] = $pageSize;
+        $queryParams['$skip'] = $pageStart;
+        $url = $baseUrl . '?' . http_build_query($queryParams);
+        $response = $waApiClient->makeRequest($url);
+        $thisResult = array_get_or_default($response, $arrayName, []);
+        $thisResultLen = count($thisResult);
+        $result = array_merge($result, $thisResult);
+        $pageStart += $thisResultLen;
+        if ($thisResultLen != $pageSize)
+            break;
+    }
+    return $result;
+}
+
 function waGetAccountDetails() {
     global $waApiClient;
     global $waAccountUrl;
@@ -79,15 +101,14 @@ function waGetContact($userWaId) {
 }
 
 function waGetContacts($filter) {
-    global $waApiClient;
     global $waAccountUrl;
 
     $queryParams = array(
         '$async' => 'false',
         '$filter' => $filter
     );
-    $url = $waAccountUrl . '/contacts/?' . http_build_query($queryParams);
-    return array_get_or_default($waApiClient->makeRequest($url), 'Contacts', []);
+    $url = $waAccountUrl . '/contacts/';
+    return waArrayQuery($url, $queryParams, 'Contacts');
 }
 
 function waFieldValueOfContact($contact, $fieldName) {

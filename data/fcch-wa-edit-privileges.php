@@ -29,8 +29,7 @@ if (is_null($waSelfContact)) {
 }
 
 $url = $waAccountUrl . '/contactfields/10379662';
-$ret = $waApiClient->makeRequest($url);
-$privDefs = array_get_or_default($ret, 'AllowedValues', []);
+$privDefs = waArrayQuery($url, array(), 'AllowedValues');
 if (!count($privDefs)) {
     echo "ERROR: could not query privileges field definition.\n";
     echo "</body></html>";

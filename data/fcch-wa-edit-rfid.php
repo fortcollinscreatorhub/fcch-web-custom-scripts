@@ -39,7 +39,7 @@ if (!isset($_POST['action'])) {
     <td><select id="action" name="action">
     <option value="add">Add specified RFID to user's list</option>
     <option value="remove">Remove specified RFID from user's list if present</option>
-    <option value="replace">Replace ALL RFIDs assigned to user with specified RFID</option>
+    <option value="replace" selected="selected">Replace ALL RFIDs assigned to user with specified RFID</option>
     <option value="clear">Remove ALL RFIDs assigned to user</option>
     <option value="query">Query user's assigned RFIDs</option>
     </select></td>

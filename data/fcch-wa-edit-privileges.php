@@ -74,8 +74,8 @@ if (!isset($_POST['action'])) {
     </form>
     <p>Hints re: which training course give which permissions:</p>
     <ul>
-    <li><b>Wood shop A</b>: SawStop Cabinet Saw, DeWalt Planer, Jet Planer, Jointers, Drum Sander, Edge Sander.</li>
-    <li><b>Wood shop B</b>: Chop Saw.</li>
+    <li><b>Wood shop A</b>: SawStop Cabinet Saw, DeWalt Planer, Jet Planer, Jointers.</li>
+    <li><b>Wood shop B</b>: Chop Saw, Drum Sander, Edge Sander.</li>
     <li><b>Wood shop C</b>: Wood Bandsaw, Wood Drill Press.</li>
     </ul>
     </body>
